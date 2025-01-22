@@ -1,0 +1,43 @@
+# RMS:
+User:
+	id(pk)
+	name(char)
+	password(char)
+	user_type(choice, or new model)
+
+Category:
+	id(pk)
+	name(char)
+
+Food:
+	id(pk)
+	name(char)
+	description(char)
+	category(Foreign key)
+	price(int)
+
+Table:
+	id(pk)
+	number(char)
+	is_available(boolean)
+
+Order:
+	id(pk)
+	user_id(fk)
+	table_id(fk)
+	quantity(int)
+
+OrderItem:
+	id(pk)
+	food_id(fk)
+	order_id(fk)
+
+# models create
+# Authentication(register,login,logout)
+# api
+# permission
+# filtering, pagination
+# documentation
+	
+	
+	
