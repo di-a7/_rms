@@ -20,9 +20,10 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
    list_display=('user','total_price','status','payment')
    list_filter = ('status','payment')
-   inline = [OrderItemInline]
+   inlines = (OrderItemInline,)
+   # inline = [OrderItemInline]
 
 admin.site.register(Food,FoodAdmin)
 admin.site.register(Order,OrderAdmin)
-admin.site.register(OrderItem)
+# admin.site.register(OrderItem)
 admin.site.register(Table,TableAdmin)

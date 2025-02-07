@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'core.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -95,7 +96,7 @@ DATABASES = {
     # }
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'restaurant',
+            'NAME': 'rest',
             'USER': 'postgres',
             'PASSWORD': '123',
             'HOST': 'localhost',
@@ -168,3 +169,9 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
 }
+
+# Looking to send emails in production? Check out our Email API/SMTP product!
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')

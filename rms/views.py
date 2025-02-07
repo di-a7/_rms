@@ -11,6 +11,7 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView,CreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 from .permission import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filter
 from .filters import FoodFilter
 # Create your views here.
@@ -33,3 +34,21 @@ class FoodViewset(viewsets.ModelViewSet):
 class TableList(ListCreateAPIView):
    queryset = Table.objects.all()
    serializer_class = TableSerializer
+
+class OrderViewset(viewsets.ModelViewSet):
+   queryset = Order.objects.prefetch_related('items').all()
+   serializer_class = OrderSerializer
+   pagination_class = PageNumberPagination
+   permission_classes = [IsAuthenticated]
+
+from django.core.mail import send_mail
+def sendmail(request):
+   send_mail(
+      subject = "Order",
+      message ="Your order has been created.",
+      from_email='shtdia0@gmail.com',
+      recipient_list=['abc@gmail.com'],
+   )
+   return HttpResponse({
+      "detail":"Mail Sent"
+   })

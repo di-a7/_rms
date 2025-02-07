@@ -29,6 +29,7 @@ class FoodSerializer(serializers.ModelSerializer):
    )
    class Meta:
       fields = (
+         "id",
          "name",
          "price_with_tax",
          "price",
@@ -43,3 +44,39 @@ class TableSerializer(serializers.ModelSerializer):
    class Meta:
       model = Table
       fields = '__all__'
+
+class OrderItemSerializer(serializers.ModelSerializer):
+   food_id = serializers.PrimaryKeyRelatedField(
+      queryset = Food.objects.all(),
+      source = 'food',
+   )
+   food_name = serializers.StringRelatedField(
+      source = 'food'
+   )
+   class Meta:
+      model = OrderItem
+      fields = ['food_id','food_name']
+      
+class OrderSerializer(serializers.ModelSerializer):
+   user = serializers.HiddenField(default = serializers.CurrentUserDefault())
+   items = OrderItemSerializer(many = True)
+   status = serializers.CharField(read_only = True)
+   payment = serializers.BooleanField(read_only = True)
+   class Meta:
+      model = Order
+      fields = [
+         "user",
+         "table",
+         "total_price",
+         "status",
+         "payment",
+         "items",
+      ]
+
+   def create(self, validated_data):
+      items_data = validated_data.pop('items')
+      order = Order.objects.create(**validated_data)
+      
+      for item in items_data:
+         OrderItem.objects.create(order = order, food = item['food'])
+      return order
